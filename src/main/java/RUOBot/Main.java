@@ -1,42 +1,33 @@
 package RUOBot;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
 
 import javax.security.auth.login.LoginException;
 
-public class Main extends ListenerAdapter {
-    public static JDA jda;
-    public static String keyword = "우석";
-    public static void main(String[] args) throws LoginException{
-        jda = JDABuilder.createLight("OTk5NjQ0MzgzNTAwNTY2NTU5.GFFfqV.BJywzjs7pl4-dyi7S2cJSZEWfeyffemo2IDHfY", GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS).build();
-        jda.getPresence().setStatus(OnlineStatus.ONLINE);
-        jda.getPresence().setActivity(Activity.listening("우석이 괜찮은지"));
+public class Main{
 
-        jda.addEventListener(new Main());
+    private String token = "OTk5NjQ0MzgzNTAwNTY2NTU5.GmFA8P.kmiHQG0NaPxr_EG0JvvmtxX-1EW9erfBSYSzfI";
+    private final ShardManager shardManager;
 
+    public ShardManager getShardManager() {
+        return shardManager;
     }
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent e){
-        Message msg = e.getMessage();
-        String content = msg.getContentRaw();
-        String prefix = "$";
+    public Main() throws LoginException{
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
+        builder.setStatus(OnlineStatus.ONLINE);
+        builder.setActivity(Activity.competing("우석이 위로"));
+        shardManager = builder.build();
+    }
 
-        if(e.getAuthor().isBot()) return;
-
-        if(content.equals(prefix+keyword)){
-            MessageChannel channel = e.getChannel();
-            channel.sendMessage("괜찮아?").queue();
-
-            System.out.printf("[%s]%#s: %s%n", e.getChannel(), e.getAuthor(), e.getMessage().getContentDisplay());
+    public static void main(String[] args) {
+        try{
+            Main bot = new Main();
+        } catch (LoginException e){
+            System.out.println("ERROR : 유효하지 않은 토큰!");
         }
     }
 }
