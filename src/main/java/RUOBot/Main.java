@@ -1,5 +1,6 @@
 package RUOBot;
 
+import RUOBot.listners.EventListner;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -9,7 +10,7 @@ import javax.security.auth.login.LoginException;
 
 public class Main{
 
-    private String token = "OTk5NjQ0MzgzNTAwNTY2NTU5.GmFA8P.kmiHQG0NaPxr_EG0JvvmtxX-1EW9erfBSYSzfI";
+    private String token = "TOKEN";
     private final ShardManager shardManager;
 
     public ShardManager getShardManager() {
@@ -21,6 +22,9 @@ public class Main{
         builder.setStatus(OnlineStatus.ONLINE);
         builder.setActivity(Activity.competing("우석이 위로"));
         shardManager = builder.build();
+
+        //  Register Listeners
+        shardManager.addEventListener(new EventListner());
     }
 
     public static void main(String[] args) {
