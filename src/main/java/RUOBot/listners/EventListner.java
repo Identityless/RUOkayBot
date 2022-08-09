@@ -16,10 +16,27 @@ public class EventListner extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
         Message msg = event.getMessage();
-        String msge = msg.getContentRaw();
+        String user = event.getMember().getUser().getAsTag();
+        String[] msges = new String[3];
+        msges[1] = "1";
+        msges = event.getMessage().getContentRaw().split(" ");
 
-        if(msge.equals("!우석")) {
-            event.getChannel().sendMessage("괜찮아?").queue();
+
+        if(msges[0].equals("!우석")) {
+            try{
+                int rept = Integer.parseInt(msges[1]);
+
+                if(rept > 10){
+                    event.getChannel().sendMessage("야 " + user +". 너 왜 테러하려그래? 응? 너 미친넘이야? 적당히 해.\n10회 이하로 입력하란 말이야 미친넘아.").queue();
+                }
+                else {
+                    for (int i = 0; i < rept; i++) {
+                        event.getChannel().sendMessage("괜찮아?").queue();
+                    }
+                }
+            }catch (Exception e){
+                event.getChannel().sendMessage("잘못된 값 입력!").queue();
+            }
         }
     }
 
@@ -40,6 +57,8 @@ public class EventListner extends ListenerAdapter {
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         super.onGuildMemberJoin(event);
 
+        String avatar = event.getUser().getEffectiveAvatarUrl();
+        System.out.println(avatar);
 
     }
 }
